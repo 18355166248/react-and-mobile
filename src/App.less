@@ -1,0 +1,14 @@
+/*
+* .less文件
+* iPhone6的375px尺寸作为16px基准（即此时1rem对应16px），
+* 而此时设计稿对应的宽为750px，
+* 所以移动端的rem大小 = 设计稿中量出的尺寸/2/16 rem
+*/
+.pxtorem(@pro, @px) {
+  @{pro}: (@px / 16 / 2) * 1rem;
+}
+.test {
+  .pxtorem(width, 750);
+  .pxtorem(height, 200);
+  background-color: beige;
+}
