@@ -47,12 +47,18 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
   throw new Error('Production builds must have NODE_ENV=production.');
 }
 
+function resolvePath(dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // style files regexes
 // const cssRegex = /\.css$/;
-const cssRegex = /\.(css|less)$/;
+const cssRegex = /\.css$/;
+const lessRegex = /\.less$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
@@ -360,6 +366,15 @@ module.exports = {
             // Remove this when webpack adds a warning or an error for this.
             // See https://github.com/webpack/webpack/issues/6571
             sideEffects: true,
+          },
+          {
+            test: lessRegex,
+            exclude: /node_modules|antd\.less/,
+            use: getStyleLoaders({
+              importLoaders: 1,
+              modules: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]', //
+            }),
           },
           // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
           // using the extension .module.css
